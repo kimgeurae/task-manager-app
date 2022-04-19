@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -32,7 +33,13 @@ const userSchema = new mongoose.Schema({
         validate(value) {
             if(value.toLowerCase().includes('password')) throw new Error('Password cannot contains \'password\'')
         }
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            require: true
+        }
+    }]
 })
 
 // Middleware for hashing the plain text password before saving
@@ -46,6 +53,16 @@ userSchema.pre('save', async function(next) {
 
     next()
 })
+
+userSchema.methods.generateAuthToken = async function() {
+    const user = this
+    const token = jwt.sign({ _id: user._id.toString() }, 'thisismynewcourse')
+
+    user.tokens = user.tokens.concat({ token })
+    await user.save()
+
+    return token
+}
 
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email })
