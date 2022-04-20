@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import sharp from 'sharp'
 import Task from './task.js'
 
 const userSchema = new mongoose.Schema({
@@ -40,7 +41,10 @@ const userSchema = new mongoose.Schema({
             type: String,
             require: true
         }
-    }]
+    }],
+    avatar: {
+        type: Buffer
+    }
 }, {
     timestamps: true
 })
@@ -75,6 +79,7 @@ userSchema.methods.toJSON = function() {
 
     delete userObject.password
     delete userObject.tokens
+    delete userObject.avatar
 
     return userObject
 }
