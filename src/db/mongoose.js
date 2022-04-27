@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
-import dotenv from 'dotenv'
-
-dotenv.config()
+if(process.env.NODE_ENV !== 'production') {
+    await import('dotenv').then((dotenv) => {
+        dotenv.config()
+    })
+}
 
 mongoose.connect(process.env.MONGODB_URL)

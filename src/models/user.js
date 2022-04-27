@@ -3,8 +3,11 @@ import validator from 'validator'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import Task from './task.js'
-import dotenv from 'dotenv'
-dotenv.config()
+if(process.env.NODE_ENV !== 'production') {
+    await import('dotenv').then((dotenv) => {
+        dotenv.config()
+    })
+}
 
 const userSchema = new mongoose.Schema({
     name: {

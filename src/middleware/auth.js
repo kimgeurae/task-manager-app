@@ -1,7 +1,10 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/user.js'
-import dotenv from 'dotenv'
-dotenv.config()
+if(process.env.NODE_ENV !== 'production') {
+    await import('dotenv').then((dotenv) => {
+        dotenv.config()
+    })
+}
 
 const auth = async (req, res, next) => {
     try {

@@ -2,9 +2,12 @@ import express from 'express'
 import './db/mongoose.js'
 import userRouter from './routers/user.js'
 import taskRouter from './routers/task.js'
-import dotenv from 'dotenv'
-
-dotenv.config()
+if(process.env.NODE_ENV !== 'production') {
+    await import('dotenv').then((dotenv) => {
+        console.log('dotenv loaded')
+        dotenv.config()
+    })
+}
 
 const app = express()
 const port = process.env.PORT

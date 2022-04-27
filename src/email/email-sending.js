@@ -1,9 +1,12 @@
-import dotenv from 'dotenv'
 import nodemailer from 'nodemailer'
 import googleapis from 'googleapis'
 const { google } = googleapis
 const OAuth2 = google.auth.OAuth2
-dotenv.config()
+if(process.env.NODE_ENV !== 'production') {
+    await import('dotenv').then((dotenv) => {
+        dotenv.config()
+    })
+}
 
 const createTransporter = async () => {
     const oauth2Client = new OAuth2(
