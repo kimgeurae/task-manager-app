@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon -r dotenv/config src/index.js dotenv_config_path=C:/Users/Usuário/Documents/NodeJS/node-course/task-manager/config/dev.env",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --runInBand"
   },
   "keywords": [],
   "author": "",
