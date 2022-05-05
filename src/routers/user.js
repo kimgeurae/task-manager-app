@@ -15,15 +15,14 @@ router.post('/users/signup', async(req, res) => {
         subject: `Welcome to the task-manager app, ${user.name}!`,
         text: 'Thanks for signing up'
     }
-    sendEmail(message).then(() => {
-        console.log('Welcome mail sended successfully')
-    }).catch((e) => {
-        console.log(e)
-    })
     try {
         await user.save()
-
         const token = await user.generateAuthToken()
+        await sendEmail(message).then(() => {
+            console.log('Welcome mail sended successfully')
+        }).catch((e) => {
+            console.log(e)
+        })
         res.status(201).send({ user, token })
     } catch(e) {
         res.status(400).send(e)
@@ -94,7 +93,7 @@ router.delete('/users/me', auth, async (req, res) => {
             subject: `Farewell ${req.user.name}!`,
             text: 'Thanks staying with us all this time, please tell us why you\'re leaving and what would it take to keep you onboard.'
         }
-        sendEmail(message).then(() => {
+        await sendEmail(message).then(() => {
             console.log('Farewell mail sended successfully')
         }).catch((e) => {
             console.log(e)
